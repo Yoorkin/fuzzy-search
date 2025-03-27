@@ -2,7 +2,7 @@
 struct Blog {
   title : String
   date : String
-}
+} derive(Show)
 
 ///|
 impl Searchable for Blog with summarize(self) {
@@ -16,13 +16,20 @@ test {
     { title: "Use Fuzzy Search in MoonBit", date: "2025-01-02" },
     { title: "How to use MoonBit", date: "2025-01-03" },
   ]
+  let results = search(blogs, "fuzzymoon")
   inspect!(
-    search(blogs, "fuzzymoon").map(debug_spans).join("\n"),
+    results.map(debug_spans).join("\n"),
     content=
       #|How to implement Fuzzy Search in MoonBit
       #|                 ^^^^^           ^^^^   
       #|Use Fuzzy Search in MoonBit
       #|    ^^^^^           ^^^^   
+    ,
+  )
+  inspect!(
+    results,
+    content=
+      #|[{entry: {title: "How to implement Fuzzy Search in MoonBit", date: "2025-01-01"}, spans: [Unmatched(0, 17), Matched(17, 22), Unmatched(22, 33), Matched(33, 37), Unmatched(37, 40)]}, {entry: {title: "Use Fuzzy Search in MoonBit", date: "2025-01-02"}, spans: [Unmatched(0, 4), Matched(4, 9), Unmatched(9, 20), Matched(20, 24), Unmatched(24, 27)]}]
     ,
   )
 }
@@ -50,4 +57,14 @@ test "fuzzy search" {
       #|
     ,
   )
+}
+
+///|
+fn sort_test[A : Searchable](entries : Array[A], query : String) -> String {
+  let results = search(entries, query)
+  let mut r = ""
+  for p in results {
+    r += p.debug_spans() + "\n"
+  }
+  r
 }

@@ -165,13 +165,3 @@ test "match spans" {
     ,
   )
 }
-
-///|
-fn sort_test[A : Searchable](entries : Array[A], query : String) -> String {
-  let results = search(entries, query)
-  let mut r = ""
-  for p in results {
-    r += pretty_match_spans(p.entry.summarize(), p.spans) + "\n"
-  }
-  r
-}
