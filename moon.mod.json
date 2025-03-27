@@ -2,9 +2,11 @@
   "name": "Yoorkin/fuzzy_search",
   "version": "0.1.0",
   "readme": "README.md",
-  "repository": "",
+  "repository": "https://github.com/Yoorkin/fuzzy-search",
   "license": "Apache-2.0",
-  "keywords": [],
+  "keywords": [
+    "search"
+  ],
   "description": "",
   "source": "src"
 }
